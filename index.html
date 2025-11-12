@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Guardar Lista de Despacho</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      input,
+      select,
+      button {
+        padding: 5px;
+        margin: 5px 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 5px;
+        text-align: left;
+      }
+      button.eliminar {
+        color: white;
+        background: red;
+        border: none;
+        padding: 3px 8px;
+        cursor: pointer;
+      }
+      button.consultar {
+        color: white;
+        background: rgb(0, 98, 255);
+        border: none;
+        padding: 3px 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ingresar datos</h2>
+
+    <label>Dependencia:</label><br />
+    <select id="dependencia">
+      <option value="">Seleccione una Dependencia</option>
+      <option value="7441513">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 1
+      </option>
+      <option value="47322600">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 2
+      </option>
+      <option value="48324735">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 3
+      </option>
+      <option value="49330419">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 4
+      </option>
+      <option value="50332011">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 5
+      </option>
+      <option value="51332979">
+        Juzgado de 1° Instancia en lo Civil y Comercial N° 6
+      </option>
+      <option value="55531780">
+        Juzgado de 1° Instancia en lo Civil, Comercial y del Trabajo - Clorinda
+      </option>
+      <option value="56543833">
+        Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de Menores
+        - Las Lomitas
+      </option>
+      <option value="54215613">
+        Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de Menores
+        Nº 7 - El Colorado
+      </option>
+      <option value="205591697">Juzgado de Menores - Clorinda</option>
+      <option value="393241140">
+        Oficina de Gestión de Audiencias del Fuero Civil y Comercial
+      </option></select
+    ><br />
+
+    <label>Número:</label><br />
+    <input type="text" id="numero" /><br />
+
+    <label>Año:</label><br />
+    <input type="text" id="anio" /><br />
+
+    <button id="guardar">Guardar</button>
+    <p id="mensaje"></p>
+
+    <h3>Datos guardados:</h3>
+    <table id="tablaDatos">
+      <thead>
+        <tr>
+          <th>Dependencia</th>
+          <th>Número</th>
+          <th>Año</th>
+          <th>Acción</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <iframe id="iframeResultados" style="width: 100%; height: 400px"></iframe>
+
+    <script>
+      async function cargarDatos() {
+        const res = await fetch('/datos')
+        const datos = await res.json()
+
+        const tbody = document.querySelector('#tablaDatos tbody')
+        tbody.innerHTML = ''
+
+        datos.forEach(d => {
+          const tr = document.createElement('tr')
+          tr.innerHTML = `<td>${d.dependencia}</td><td>${d.numero}</td><td>${d.anio}</td>
+                    <td><button class="eliminar" data-id="${d.id}">Eliminar</button></td>
+                    <button class="consultar"
+                     data-dependencia="${d.dependencia}"
+                     data-numero="${d.numero}"
+                     data-anio="${d.anio}">Consultar</button>
+                    `
+          tbody.appendChild(tr)
+        })
+
+        // Agregar eventos a los botones eliminar
+        document.querySelectorAll('.eliminar').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.getAttribute('data-id')
+            await fetch(`/eliminar/${id}`, { method: 'DELETE' })
+            cargarDatos()
+          })
+        })
+
+        // Botones consultar
+        document.querySelectorAll('.consultar').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const dependencia = btn.getAttribute('data-dependencia')
+            const numero = btn.getAttribute('data-numero')
+            const anio = btn.getAttribute('data-anio')
+
+            const res = await fetch('/consultar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ dependencia, numero, anio })
+            })
+            const data = await res.json()
+            // Mostrar HTML en iframe
+            const iframe = document.getElementById('iframeResultados')
+            iframe.srcdoc = data.html
+          })
+        })
+      }
+
+      document.getElementById('guardar').addEventListener('click', async () => {
+        const dependencia = document.getElementById('dependencia').value
+        const numero = document.getElementById('numero').value
+        const anio = document.getElementById('anio').value
+
+        if (!dependencia || !numero || !anio) {
+          document.getElementById('mensaje').innerText =
+            '⚠ Todos los campos son obligatorios'
+          return
+        }
+
+        await fetch('/guardar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dependencia, numero, anio })
+        })
+
+        document.getElementById('mensaje').innerText = 'Registro guardado'
+        cargarDatos()
+
+        document.getElementById('dependencia').value = ''
+        document.getElementById('numero').value = ''
+        document.getElementById('anio').value = ''
+      })
+
+      // Cargar tabla al iniciar
+      cargarDatos()
+    </script>
+  </body>
+</html>

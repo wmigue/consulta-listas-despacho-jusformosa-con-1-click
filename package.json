@@ -1,0 +1,19 @@
+{
+  "name": "consulta-listas-despacho-jusformosa",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "crudo_test": "node test/test_puppeteer.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^24.29.1"
+  }
+}

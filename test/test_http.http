@@ -1,0 +1,5 @@
+# Consulta Canavesio lista despacho POST
+POST https://portalservicios.jusformosa.gob.ar/listadespachoV4/consultas/C_consulta/ConsultaListaEjusticiaPorNumAnio
+Content-Type: application/x-www-form-urlencoded
+
+inputNumero=131&inputAnio=23&inputDependencia=50332011&inputOVI=&inputFecha=
