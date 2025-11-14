@@ -3,10 +3,13 @@ import bodyParser from 'body-parser'
 import fs from 'fs'
 import path from 'path'
 import puppeteer from 'puppeteer'
+import cors from 'cors'
 
 const app = express()
 const PORT = 3000
 
+app.use(cors())
+app.use(express.json())
 app.use(bodyParser.json())
 
 // Servir index.html
@@ -14,59 +17,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve('index.html'))
 })
 
-// Guardar registro
-app.post('/guardar', (req, res) => {
-  const { dependencia, numero, anio } = req.body
-  let datos = []
-  if (fs.existsSync('data.json')) {
-    try {
-      const fileContent = fs.readFileSync('data.json', 'utf-8')
-      datos = fileContent ? JSON.parse(fileContent) : []
-    } catch {
-      datos = []
-    }
-  }
-  // agregar id único a cada registro para poder eliminarlo
-  const id = Date.now()
-  datos.push({ id, dependencia, numero, anio })
-  fs.writeFileSync('data.json', JSON.stringify(datos, null, 2))
-
-  res.json({ success: true, message: 'Datos guardados correctamente' })
-})
-
-// Obtener todos los registros
-app.get('/datos', (req, res) => {
-  let datos = []
-  if (fs.existsSync('data.json')) {
-    try {
-      const fileContent = fs.readFileSync('data.json', 'utf-8')
-      datos = fileContent ? JSON.parse(fileContent) : []
-    } catch {
-      datos = []
-    }
-  }
-  res.json(datos)
-})
-
-// Eliminar registro por id
-app.delete('/eliminar/:id', (req, res) => {
-  const id = parseInt(req.params.id)
-  let datos = []
-  if (fs.existsSync('data.json')) {
-    try {
-      const fileContent = fs.readFileSync('data.json', 'utf-8')
-      datos = fileContent ? JSON.parse(fileContent) : []
-    } catch {
-      datos = []
-    }
-  }
-
-  datos = datos.filter(d => d.id !== id)
-  fs.writeFileSync('data.json', JSON.stringify(datos, null, 2))
-
-  res.json({ success: true, message: 'Registro eliminado correctamente' })
-})
-
+//consultar con puppeteer (scraping)
 app.post('/consultar', async (req, res) => {
   const { dependencia, numero, anio } = req.body
   const browser = await puppeteer.launch({

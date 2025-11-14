@@ -4,20 +4,53 @@
     <meta charset="UTF-8" />
     <title>Guardar Lista de Despacho</title>
     <style>
+      .spinner-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 200px; /* podés ajustar esto */
+        font-family: sans-serif;
+        color: #333;
+      }
+
+      .spinner {
+        width: 80px; /* tamaño del círculo */
+        height: 80px;
+        border: 10px solid #ccc; /* grosor del borde gris */
+        border-top: 10px solid #3498db; /* color del borde animado */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 10px; /* separación con el texto */
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
       body {
         font-family: sans-serif;
         padding: 20px;
+        background-color: rgb(24, 24, 24);
+        color: rgb(92, 92, 92);
       }
       input,
       select,
       button {
         padding: 5px;
         margin: 5px 0;
+        background-color: rgb(167, 167, 167);
+        color: rgb(0, 0, 0);
       }
       table {
         border-collapse: collapse;
         width: 100%;
         margin-top: 20px;
+        margin-bottom: 30px;
       }
       th,
       td {
@@ -39,149 +72,215 @@
         padding: 3px 8px;
         cursor: pointer;
       }
+      button.guardar {
+        color: white;
+        background: rgb(2, 104, 33);
+        border: none;
+        padding: 3px 8px;
+        cursor: pointer;
+      }
+      .layout1 {
+        display: flex;
+        flex-direction: column; /* elementos en una fila */
+        align-items: center; /* alinea verticalmente al centro */
+        gap: 1px; /* espacio entre elementos */
+        flex-wrap: wrap; /* si no entra, pasa a la siguiente línea */
+        width: 100%; /* ocupa todo el ancho */
+        box-sizing: border-box;
+      }
+      .izquierda {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+      }
     </style>
   </head>
   <body>
-    <h2>Ingresar datos</h2>
+    <div class="layout1 izquierda">
+      <h2>Agregar expedientes</h2>
+      <label>Descripción:</label><br />
+      <input
+        type="text"
+        style="width: 40%"
+        id="descripcion"
+        placeholder="Descripción del expediente"
+      /><br />
+      <label>Dependencia:</label><br />
+      <select id="dependencia">
+        <option value="">Seleccione una Dependencia</option>
+        <option value="7441513">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 1
+        </option>
+        <option value="47322600">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 2
+        </option>
+        <option value="48324735">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 3
+        </option>
+        <option value="49330419">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 4
+        </option>
+        <option value="50332011">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 5
+        </option>
+        <option value="51332979">
+          Juzgado de 1° Instancia en lo Civil y Comercial N° 6
+        </option>
+        <option value="55531780">
+          Juzgado de 1° Instancia en lo Civil, Comercial y del Trabajo -
+          Clorinda
+        </option>
+        <option value="56543833">
+          Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de
+          Menores - Las Lomitas
+        </option>
+        <option value="54215613">
+          Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de
+          Menores Nº 7 - El Colorado
+        </option>
+        <option value="205591697">Juzgado de Menores - Clorinda</option>
+        <option value="393241140">
+          Oficina de Gestión de Audiencias del Fuero Civil y Comercial
+        </option></select
+      ><br />
 
-    <label>Dependencia:</label><br />
-    <select id="dependencia">
-      <option value="">Seleccione una Dependencia</option>
-      <option value="7441513">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 1
-      </option>
-      <option value="47322600">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 2
-      </option>
-      <option value="48324735">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 3
-      </option>
-      <option value="49330419">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 4
-      </option>
-      <option value="50332011">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 5
-      </option>
-      <option value="51332979">
-        Juzgado de 1° Instancia en lo Civil y Comercial N° 6
-      </option>
-      <option value="55531780">
-        Juzgado de 1° Instancia en lo Civil, Comercial y del Trabajo - Clorinda
-      </option>
-      <option value="56543833">
-        Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de Menores
-        - Las Lomitas
-      </option>
-      <option value="54215613">
-        Juzgado de 1° Instancia en lo Civil, Comercial, del Trabajo y de Menores
-        Nº 7 - El Colorado
-      </option>
-      <option value="205591697">Juzgado de Menores - Clorinda</option>
-      <option value="393241140">
-        Oficina de Gestión de Audiencias del Fuero Civil y Comercial
-      </option></select
-    ><br />
+      <label>Número:</label><br />
+      <input type="text" id="numero" placeholder="ejemplo: 131" /><br />
 
-    <label>Número:</label><br />
-    <input type="text" id="numero" /><br />
+      <label>Año:</label><br />
+      <input type="text" id="anio" placeholder="ejemplo: 23" /><br />
 
-    <label>Año:</label><br />
-    <input type="text" id="anio" /><br />
+      <button id="guardar" class="guardar">Guardar</button>
+      <p id="mensaje"></p>
+    </div>
 
-    <button id="guardar">Guardar</button>
-    <p id="mensaje"></p>
+    <div class="layout1">
+      <h2>Mis expedientes guardados:</h2>
+      <table id="tablaDatos">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Dependencia</th>
+            <th>Número</th>
+            <th>Año</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-    <h3>Datos guardados:</h3>
-    <table id="tablaDatos">
-      <thead>
-        <tr>
-          <th>Dependencia</th>
-          <th>Número</th>
-          <th>Año</th>
-          <th>Acción</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <iframe id="iframeResultados" style="width: 100%; height: 400px"></iframe>
+    <div class="layout1">
+      <div class="buscando"></div>
+      <h2>Resultados de la consulta:</h2>
+      <iframe id="iframeResultados" style="width: 100%; height: 400px"></iframe>
+    </div>
 
     <script>
-      async function cargarDatos() {
-        const res = await fetch('/datos')
-        const datos = await res.json()
+      // === Funciones auxiliares para localStorage ===
+      function obtenerDatos() {
+        const datos = localStorage.getItem('datosDespacho')
+        return datos ? JSON.parse(datos) : []
+      }
 
+      function guardarDatos(datos) {
+        localStorage.setItem('datosDespacho', JSON.stringify(datos))
+      }
+
+      function cargarDatos() {
+        const datos = obtenerDatos()
         const tbody = document.querySelector('#tablaDatos tbody')
         tbody.innerHTML = ''
 
-        datos.forEach(d => {
+        datos.forEach((d, i) => {
           const tr = document.createElement('tr')
-          tr.innerHTML = `<td>${d.dependencia}</td><td>${d.numero}</td><td>${d.anio}</td>
-                    <td><button class="eliminar" data-id="${d.id}">Eliminar</button></td>
-                    <button class="consultar"
-                     data-dependencia="${d.dependencia}"
-                     data-numero="${d.numero}"
-                     data-anio="${d.anio}">Consultar</button>
-                    `
+          tr.innerHTML = `
+            <td>${d.descripcion}</td>
+            <td>${d.dependencia}</td>
+            <td>${d.numero}</td>
+            <td>${d.anio}</td>
+            <td>
+              <button class="consultar"
+               data-dependencia="${d.dependencia}"
+               data-numero="${d.numero}"
+               data-anio="${d.anio}">Consultar Estado</button>
+              <button class="eliminar" data-index="${i}">Eliminar</button>
+            </td>
+
+          `
           tbody.appendChild(tr)
         })
 
-        // Agregar eventos a los botones eliminar
+        // Eliminar registro
         document.querySelectorAll('.eliminar').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const id = btn.getAttribute('data-id')
-            await fetch(`/eliminar/${id}`, { method: 'DELETE' })
+          btn.addEventListener('click', () => {
+            const i = btn.getAttribute('data-index')
+            const datos = obtenerDatos()
+            datos.splice(i, 1)
+            guardarDatos(datos)
             cargarDatos()
           })
         })
 
-        // Botones consultar
+        // Consultar (llama al backend con Puppeteer)
         document.querySelectorAll('.consultar').forEach(btn => {
           btn.addEventListener('click', async () => {
+            const buscandoSpinner = document.querySelector('.buscando')
             const dependencia = btn.getAttribute('data-dependencia')
             const numero = btn.getAttribute('data-numero')
             const anio = btn.getAttribute('data-anio')
 
-            const res = await fetch('/consultar', {
+            buscandoSpinner.innerHTML =
+              '<div class="spinner"></div><div>Procesando, espere...</div>'
+
+            const res = await fetch('http://localhost:3000/consultar', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ dependencia, numero, anio })
             })
-            const data = await res.json()
-            // Mostrar HTML en iframe
+
             const iframe = document.getElementById('iframeResultados')
+
+            //spinner en el iframe mientras carga
+            iframe.srcdoc = '<div class="spinner"></div>'
+            const data = await res.json()
+
+            buscandoSpinner.innerHTML = ''
+            // Mostrar HTML en el iframe
             iframe.srcdoc = data.html
           })
         })
       }
 
-      document.getElementById('guardar').addEventListener('click', async () => {
+      // === Guardar nuevo registro ===
+      document.getElementById('guardar').addEventListener('click', () => {
         const dependencia = document.getElementById('dependencia').value
         const numero = document.getElementById('numero').value
         const anio = document.getElementById('anio').value
+        const descripcion = document.getElementById('descripcion').value
 
-        if (!dependencia || !numero || !anio) {
+        if (!dependencia || !numero || !anio || !descripcion) {
           document.getElementById('mensaje').innerText =
             '⚠ Todos los campos son obligatorios'
           return
         }
 
-        await fetch('/guardar', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dependencia, numero, anio })
-        })
+        const datos = obtenerDatos()
+        datos.push({ dependencia, numero, anio, descripcion })
+        guardarDatos(datos)
 
-        document.getElementById('mensaje').innerText = 'Registro guardado'
-        cargarDatos()
-
+        document.getElementById('mensaje').innerText = 'Registro guardado ✅'
         document.getElementById('dependencia').value = ''
         document.getElementById('numero').value = ''
         document.getElementById('anio').value = ''
+        document.getElementById('descripcion').value = ''
+
+        cargarDatos()
       })
 
-      // Cargar tabla al iniciar
+      // === Inicializar tabla ===
       cargarDatos()
     </script>
   </body>
