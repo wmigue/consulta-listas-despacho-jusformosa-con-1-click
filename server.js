@@ -25,8 +25,8 @@ app.post('/consultar', async (req, res) => {
     defaultViewport: null
   })
   const page = await browser.newPage()
-  await page.goto(
-    'https://portalservicios.jusformosa.gob.ar/listadespachoV4/consultas/C_consulta/MostrarBusquedaPorCriteriosEjusticia'
+  await page.goto('https://portalservicios.jusformosa.gob.ar/listadespacho/consultas/C_consulta/MostrarBusquedaPorCriteriosEjusticia'
+  //  'https://portalservicios.jusformosa.gob.ar/listadespachoV4/consultas/C_consulta/MostrarBusquedaPorCriteriosEjusticia'
   )
 
   //  Hacer clic en la pestaña "Número / Año"

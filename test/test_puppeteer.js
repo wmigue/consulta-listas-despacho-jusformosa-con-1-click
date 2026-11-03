@@ -10,7 +10,7 @@ import puppeteer from 'puppeteer'
 
   // Ir a la página del formulario
   await page.goto(
-    'https://portalservicios.jusformosa.gob.ar/listadespachoV4/consultas/C_consulta/MostrarBusquedaPorCriteriosEjusticia',
+'https://portalservicios.jusformosa.gob.ar/listadespacho/consultas/C_consulta/MostrarBusquedaPorCriteriosEjusticia',
     { waitUntil: 'networkidle2' }
   )
 
